@@ -1,70 +1,109 @@
-import React, {Component} from 'react'
-import {FaPencilAlt, FaTrash, FaSave} from 'react-icons/fa'
+import React, { Component } from 'react'
+import {FaPencilAlt,FaTrash,FaSave} from 'react-icons/fa'
 
-class Note extends Component{
-
-    constructor(props){
-        super(props)
-        this.state = {
-            editing: false
+class Note extends Component {
+	constructor(props) {
+		super(props)
+		this.state = {
+			editing: false
         }
-        this.edit = this.edit.bind(this)
-        this.remove = this.remove.bind(this)
-        this.renderForm = this.renderForm.bind(this)
-        this.renderDisplay = this.renderDisplay.bind(this)
-        this.save = this.save.bind(this)
-    }
-    edit(){
-        this.setState({
-            editing : true
-        })
-    }
+        
+        //Binding every function 
+		this.edit = this.edit.bind(this)
+		this.remove = this.remove.bind(this)
+		this.save = this.save.bind(this)
+		this.renderForm = this.renderForm.bind(this)
+		this.renderDisplay = this.renderDisplay.bind(this)
+		this.randomBetween = this.randomBetween.bind(this)
+	}
 
-    remove(){
-        this.props.onRemove(this.props.index)
-    }
+    //before rendering component
+	componentWillMount() {
+		this.style = {
+			right: this.randomBetween(0, window.innerWidth - 150, 'px'),
+			top: this.randomBetween(0, window.innerHeight - 150, 'px'),
+			transform: `rotate(${this.randomBetween(-25, 25, 'deg')})`
+		}
+	}
 
-    save(e){
-        e.preventDefault()
-        this.props.onChange(this._newText.value, this.props.index);
-        this.setState({
-            editing: false
-        })
-    }
+    //generate a random number
+	randomBetween(x, y, s) {
+		return x + Math.ceil(Math.random() * (y-x)) + s
+	}
 
-    renderForm(){
-        return (
-            <div className="note">
-                <form onSubmit={this.save}> 
-                    <textarea ref={input => this._newText = input}/>
-                    <button id='save'>
-                        <FaSave/>
-                    </button>
-                </form>
-            </div>
-        )
-    }
+    // component did just update
+	componentDidUpdate() {
+		var textArea
+		if(this.state.editing) {
+			textArea = this._newText
+			textArea.focus()
+			textArea.select()
+		}
+	}
 
-    renderDisplay(){
-        return (
-            <div className="note">
-                <p>{this.props.children}</p>
-                <span>
-                    <button id="edit" onClick={this.edit}>
-                        <FaPencilAlt/>
-                    </button>
-                    <button id="remove" onClick={this.remove}>
-                        <FaTrash/>
-                    </button>
-                </span>
+    //component will just be updated if there is a some change in props.children or state
+	shouldComponentUpdate(nextProps, nextState) {
+		return (
+			this.props.children !== nextProps.children || this.state !== nextState
+		)
+	}
 
-            </div>
-        )
-    }
+    //Edit Note: open renderForm
+	edit() {
+		this.setState({
+			editing: true
+		})
+	}
 
-    render(){
-        return this.state.editing ? this.renderForm() : this.renderDisplay()
+    //Remove note
+	remove() {
+		this.props.onRemove(this.props.index)
+	}
+
+    //Save Note text
+	save(e) {
+		e.preventDefault()
+		this.props.onChange(this._newText.value, this.props.index)
+		this.setState({
+			editing: false
+		})
+	}
+
+    //Render Note edit Form
+	renderForm() {
+		return (
+			<div className="note" style={this.style}>
+				<form onSubmit={this.save}>
+					<textarea ref={input => this._newText = input}
+							  defaultValue={this.props.children}/>
+					<button id="save"><FaSave /></button>
+				</form>
+			</div>
+		)
+	}
+
+    //Render Note display view 
+	renderDisplay() {
+		return (
+			<div className="note" style={this.style}>
+				<p>{this.props.children}</p>
+				<span>
+					<button onClick={this.edit} id="edit"><FaPencilAlt /></button>
+					<button onClick={this.remove} id="remove"><FaTrash /></button>
+				</span>
+			</div>
+		)
     }
+    
+	render() {
+		return this.state.editing ? this.renderForm() : this.renderDisplay()
+	}
+
 }
 
-export default Note;
+export default Note
+
+
+
+
+

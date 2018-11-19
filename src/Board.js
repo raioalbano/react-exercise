@@ -6,9 +6,7 @@ class Board extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            notes: [
-                
-            ]
+            notes: []
         }
         this.add = this.add.bind(this);
         this.eachNote = this.eachNote.bind(this)
@@ -17,10 +15,23 @@ class Board extends Component {
         this.nextId = this.nextId.bind(this);
     }
 
+    //Before rendering
+    componentWillMount() {
+		var self = this
+		if(this.props.count) {
+			fetch(`https://baconipsum.com/api/?type=all-meat&sentences=${this.props.count}`)
+				.then(response => response.json())
+				.then(json => json[0]
+								.split('. ')
+								.forEach(sentence => self.add(sentence.substring(0, 25))))
+		}
+    }
+    
+    //Add note to board
     add(text) {
         this.setState(prevState =>({
             notes: [
-                ...prevState.notes,
+                ...prevState.notes, //keep the existing notes
                 {
                     id: this.nextId(),
                     note: text
@@ -29,14 +40,16 @@ class Board extends Component {
         }))
     }
 
+    //Return unique id for note
     nextId() {
         this.uniqueId = this.uniqueId || 0
         return this.uniqueId++
     }
 
+    //iterate over notes, creating Note component for them
     eachNote(note, i) {
         return (
-            <Note key={i} index={i} 
+            <Note key={note.id} index={note.id} 
                 onChange={this.update}
                 onRemove={this.remove}>
                 {note.note}
@@ -44,6 +57,7 @@ class Board extends Component {
         )
     }
 
+    //Update board
     update(newText, i) {
         console.log('updating item at index', i, newText)
         this.setState(prevState => ({
@@ -53,6 +67,7 @@ class Board extends Component {
         }))
     }
 
+    //Remove note from board
     remove(id){
         console.log('removing item at', id)
         this.setState(prevState => ({
