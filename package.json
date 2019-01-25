@@ -42,6 +42,7 @@
   },
   "release": {
     "branch": "react-exercise/master",
-    "getLastRelease": "last-release-git"
+    "getLastRelease": "last-release-git",
+    "repository": "https://github.com/raioalbano/react-exercise.git"
   }
 }
