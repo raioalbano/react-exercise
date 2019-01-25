@@ -13,7 +13,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "semantic-release": "semantic-release pre && semantic-release post"
+    "semantic-release": "semantic-release",
+    "semantic-release-local": "semantic-release"
   },
   "eslintConfig": {
     "extends": "react-app"
