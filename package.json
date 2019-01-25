@@ -41,7 +41,7 @@
     }
   },
   "release": {
-    "branch": "next",
+    "branch": "master",
     "getLastRelease": "last-release-git"
   }
 }
