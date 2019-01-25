@@ -41,6 +41,7 @@
     }
   },
   "release": {
+    "branch": "react-exercise/master",
     "getLastRelease": "last-release-git"
   }
 }
