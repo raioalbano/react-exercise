@@ -13,7 +13,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "semantic-release": "semantic-release --prepare &&  semantic-release --success",
+    "semantic-release": "semantic-release --prepare --publish --success",
     "semantic-release-local": "semantic-release"
   },
   "eslintConfig": {
