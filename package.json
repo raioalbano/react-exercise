@@ -28,6 +28,7 @@
   "devDependencies": {
     "@commitlint/cli": "^7.3.2",
     "@commitlint/config-conventional": "^7.3.1",
+    "@semantic-release/changelog": "^3.0.2",
     "@semantic-release/commit-analyzer": "^6.1.0",
     "@semantic-release/github": "^5.2.10",
     "@semantic-release/npm": "^5.1.4",
@@ -42,7 +43,7 @@
     }
   },
   "release": {
-    "branch": "react-exercise/master",
+    "branch": "master",
     "getLastRelease": "last-release-git",
     "repositoryUrl": "https://github.com/raioalbano/react-exercise.git"
   }
